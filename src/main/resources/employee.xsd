@@ -45,7 +45,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="getEmployeeResponse">
+	<xs:element name="getEmployeeByIdResponse">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="employeeInfo" type="tns:employeeInfo" />
