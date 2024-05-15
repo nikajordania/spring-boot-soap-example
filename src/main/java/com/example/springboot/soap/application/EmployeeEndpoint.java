@@ -10,6 +10,9 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+
 @Endpoint
 @RequiredArgsConstructor
 public class EmployeeEndpoint {
@@ -26,6 +29,9 @@ public class EmployeeEndpoint {
 
         Employee employee = new Employee();
         BeanUtils.copyProperties(request.getEmployeeInfo(), employee);
+        if (request.getEmployeeInfo().getBirthDate() != null) {
+            employee.setBirthDate(request.getEmployeeInfo().getBirthDate().toGregorianCalendar().toZonedDateTime().toLocalDate());
+        }
         employeeService.AddEmployee(employee);
         serviceStatus.setStatus("SUCCESS");
         serviceStatus.setMessage("Content Added Successfully");
@@ -35,10 +41,17 @@ public class EmployeeEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getEmployeeByIdRequest")
     @ResponsePayload
-    public GetEmployeeResponse getEmployee(@RequestPayload GetEmployeeByIdRequest request) {
-        GetEmployeeResponse response = new GetEmployeeResponse();
+    public GetEmployeeByIdResponse getEmployee(@RequestPayload GetEmployeeByIdRequest request) {
+        GetEmployeeByIdResponse response = new GetEmployeeByIdResponse();
         EmployeeInfo employeeInfo = new EmployeeInfo();
-        BeanUtils.copyProperties(employeeService.getEmployeeById(request.getEmployeeId()), employeeInfo);
+        Employee employeeById = employeeService.getEmployeeById(request.getEmployeeId());
+        BeanUtils.copyProperties(employeeById, employeeInfo);
+        if (employeeById.getBirthDate() != null) {
+            try {
+                employeeInfo.setBirthDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(employeeById.getBirthDate().toString()));
+            } catch (DatatypeConfigurationException ignored) {
+            }
+        }
         response.setEmployeeInfo(employeeInfo);
         return response;
     }
@@ -48,6 +61,9 @@ public class EmployeeEndpoint {
     public UpdateEmployeeResponse updateEmployee(@RequestPayload UpdateEmployeeRequest request) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(request.getEmployeeInfo(), employee);
+        if (request.getEmployeeInfo().getBirthDate() != null) {
+            employee.setBirthDate(request.getEmployeeInfo().getBirthDate().toGregorianCalendar().toZonedDateTime().toLocalDate());
+        }
         employeeService.updateEmployee(employee);
         ServiceStatus serviceStatus = new ServiceStatus();
         serviceStatus.setStatus("SUCCESS");
