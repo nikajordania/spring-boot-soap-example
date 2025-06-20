@@ -39,6 +39,20 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="getEmployeeByEmailRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="email" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getEmployeeByEmailResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="employeeInfo" type="tns:employeeInfo" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="getEmployeeByIdRequest">
 		<xs:complexType>
 			<xs:sequence>

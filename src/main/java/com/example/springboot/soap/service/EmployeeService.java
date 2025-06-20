@@ -8,6 +8,8 @@ public interface EmployeeService {
 
     Employee getEmployeeById(long employeeId);
 
+    Employee getEmployeeByEmail(String email);
+
     void updateEmployee(Employee employee);
 
     void deleteEmployee(long employeeId);

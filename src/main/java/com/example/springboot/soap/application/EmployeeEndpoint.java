@@ -56,6 +56,23 @@ public class EmployeeEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getEmployeeByEmailRequest")
+    @ResponsePayload
+    public GetEmployeeByEmailResponse getEmployeeByEmail(@RequestPayload GetEmployeeByEmailRequest request) {
+        GetEmployeeByEmailResponse response = new GetEmployeeByEmailResponse();
+        EmployeeInfo employeeInfo = new EmployeeInfo();
+        Employee employeeByEmail = employeeService.getEmployeeByEmail(request.getEmail());
+        BeanUtils.copyProperties(employeeByEmail, employeeInfo);
+        if (employeeByEmail.getBirthDate() != null) {
+            try {
+                employeeInfo.setBirthDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(employeeByEmail.getBirthDate().toString()));
+            } catch (DatatypeConfigurationException ignored) {
+            }
+        }
+        response.setEmployeeInfo(employeeInfo);
+        return response;
+    }
+
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateEmployeeRequest")
     @ResponsePayload
     public UpdateEmployeeResponse updateEmployee(@RequestPayload UpdateEmployeeRequest request) {

@@ -20,6 +20,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findEmployeeByEmail(email);
+    }
+
+    @Override
     public void AddEmployee(Employee employee) {
         employeeRepository.save(employee);
     }
