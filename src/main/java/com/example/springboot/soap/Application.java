@@ -11,7 +11,7 @@ public class Application {
 
     public static void main(String[] args) {
         try {
-            Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092", "-ifNotExists").start();
+            Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9093", "-ifNotExists").start();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
