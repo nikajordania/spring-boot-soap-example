@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Build and run the Project
-- Build the project: `mvn clean install`
+- Build the project: `mvn clean compile`
 - Run the project: `mvn spring-boot:run`
 
 Get WSDL for detailed documentation and testing of the APIs:
